@@ -69,3 +69,4 @@ branch = true
 [project.urls]
 Repository = "https://github.com/AbdulRehman88/RobustBotDetection"
 Issues = "https://github.com/AbdulRehman88/RobustBotDetection/issues"
+DOI = "https://doi.org/10.5281/zenodo.24152214"

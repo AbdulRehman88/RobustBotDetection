@@ -1,5 +1,7 @@
 # RobustBotDetection
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24152214.svg)](https://doi.org/10.5281/zenodo.24152214)
+
 Reproducible implementation of **Reliability-Guided Expert Routing for Multimodal Twitter Bot Detection under Informative Modality Missingness**.
 
 This repository implements a leakage-controlled multimodal bot-detection pipeline with:
