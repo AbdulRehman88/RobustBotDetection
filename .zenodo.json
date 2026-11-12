@@ -1,0 +1,42 @@
+{
+  "title": "RobustBotDetection: Reliability-Guided Expert Routing for Multimodal Twitter Bot Detection under Informative Modality Missingness",
+  "upload_type": "software",
+  "description": "Reproducible implementation of a leakage-controlled multimodal social bot detection pipeline with modality-specific experts, validation-guided routing, informative-missingness auditing, pattern-label debiasing, probability calibration, robustness stress tests, statistical inference, and independent TwiBot-20 validation.",
+  "creators": [
+    {
+      "name": "Baneen, Syeda Um Ul",
+      "affiliation": "COMSATS University Islamabad"
+    },
+    {
+      "name": "Ahmed, Nabeel",
+      "affiliation": "Bajco Technologies"
+    },
+    {
+      "name": "Abbas, Assad",
+      "affiliation": "East Central University"
+    },
+    {
+      "name": "Rehman, Abdul",
+      "affiliation": "Jeonbuk National University"
+    },
+    {
+      "name": "Mun, Sungchul",
+      "affiliation": "Jeonbuk National University"
+    }
+  ],
+  "access_right": "open",
+  "license": "MIT",
+  "keywords": [
+    "social bot detection",
+    "multimodal learning",
+    "informative missingness",
+    "reliability-guided expert routing",
+    "missingness bias",
+    "probability calibration",
+    "BERTweet",
+    "TwiBot-20",
+    "TwiBot-22"
+  ],
+  "language": "eng",
+  "version": "1.0.0"
+}

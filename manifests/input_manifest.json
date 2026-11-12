@@ -1,0 +1,22 @@
+{
+    "user_file":  {
+                      "bytes":  782571868,
+                      "sha256":  "53faeeb165cea4aa65a19b0b3a37c880e5c33e42d64dca53b273cc3a62f98fcd",
+                      "path":  "user.json"
+                  },
+    "label_file":  {
+                       "bytes":  21628029,
+                       "sha256":  "02062e53d1d05128ca554d792a826aa8200c855e294b9520d1697c96b7632efc",
+                       "path":  "label.csv"
+                   },
+    "split_file":  {
+                       "bytes":  20407914,
+                       "sha256":  "f68c890c824f6f63141ed8228eb412ccb18e127f645761caaf24ed56224c0fd9",
+                       "path":  "split.csv"
+                   },
+    "edge_file":  {
+                      "bytes":  6642968601,
+                      "sha256":  "ab6ca64a4e99acabde3ccf6c1112cb36174c298f56bbf58508976ead69475c19",
+                      "path":  "edge.csv"
+                  }
+}

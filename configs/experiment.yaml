@@ -1,0 +1,174 @@
+project:
+  name: RobustBotDetection
+  version: "1.0.0"
+  objective: "Reliability-guided multimodal Twitter bot detection under informative modality missingness"
+  positive_class: bot
+  seeds: [42, 123, 2024, 3407, 7777]
+  deterministic: true
+
+datasets:
+  primary: TwiBot-22
+  external: TwiBot-20
+  redistribution:
+    raw_data: prohibited
+    repository_content: "code, configurations, manifests, aggregate evidence, and data-access instructions"
+
+modalities:
+  text:
+    name: semantic_profile_text
+    fields: [description, location]
+    excluded_from_primary: [name, username]
+    encoder: vinai/bertweet-base
+    frozen: true
+    pooling: semantic_token_mean
+    max_length: 64
+    sensitivity_max_length: 128
+    embedding_dimension: 768
+    missing_representation: exact_zero_with_availability_indicator
+
+  graph:
+    name: heterogeneous_interaction_topology
+    availability_definition: "at least one canonical user-user followers/following edge"
+    feature_relations:
+      - contain
+      - discuss
+      - followed
+      - followers
+      - following
+      - like
+      - membership
+      - mentioned
+      - own
+      - pinned
+      - post
+      - quoted
+      - replied_to
+      - retweeted
+    features_per_relation: [incoming_degree, outgoing_degree]
+    feature_dimension: 28
+    prohibited_inputs: [labels, neighbor_labels, text_embeddings, metadata_features]
+
+  metadata:
+    name: account_metadata
+    feature_dimension: 10
+    raw_fields: [created_at, public_metrics, verified]
+    reference_date: "2022-03-14"
+    winsorization_quantiles: [0.001, 0.999]
+    preprocessing_fit_scope: train_only
+
+splits:
+  source: official
+  train: train
+  validation: val
+  test: test
+  fit_preprocessing_on: train
+  tune_on: validation
+  evaluate_test_once: true
+
+experts:
+  text:
+    required_modalities: [T]
+    learner: frozen_bertweet_mlp
+    learning_rate: 0.001
+    dropout: 0.5
+
+  graph:
+    required_modalities: [G]
+    learner: xgboost
+    max_depth: 6
+    learning_rate: 0.10
+
+  metadata:
+    required_modalities: [M]
+    learner: xgboost
+    max_depth: 8
+    learning_rate: 0.05
+
+  text_metadata:
+    required_modalities: [T, M]
+    learner: frozen_bertweet_metadata_mlp
+    learning_rate: 0.0003
+    dropout: 0.2
+
+routing:
+  reliability_measure: mean_validation_macro_f1_across_seeds
+  selection_rule: highest_reliability_compatible_expert
+  mapping:
+    T: text
+    G: graph
+    M: metadata
+    TG: text
+    TM: text_metadata
+    GM: metadata
+    TGM: text_metadata
+  no_modality_fallback:
+    score: source_training_bot_prevalence
+    prediction: human
+
+calibration:
+  method: seed_specific_platt_scaling
+  fit_split: validation
+  changes_hard_predictions: false
+  changes_routing: false
+  ece_bins: 15
+
+missingness_debiasing:
+  strata: text_availability_by_user_user_graph_availability_by_label
+  training_target: equal_total_weight_per_observed_stratum
+  selection_metric: pattern_and_label_standardized_macro_f1
+  role: sensitivity_model_not_primary_replacement
+
+evaluation:
+  primary_metric: macro_f1
+  secondary_metrics:
+    - accuracy
+    - balanced_accuracy
+    - precision_bot
+    - recall_bot
+    - specificity_human
+    - f1_bot
+    - mcc
+    - auroc
+    - auprc
+  confidence_level: 0.95
+  bootstrap_replicates: 10000
+  threshold_selection:
+    split: validation
+    objective: exact_macro_f1_over_unique_score_boundaries
+  multiple_comparison_control: Holm
+  forced_modality_scenarios: [T, G, M, TG, TM, GM, TGM]
+
+stress_tests:
+  missingness_rates: [0.10, 0.30, 0.50, 0.70]
+  missingness_mechanisms: [mcar, bot_heavier, human_heavier]
+  repetitions_per_seed: 10
+  gaussian_noise_standard_deviations: [0.00, 0.05, 0.10, 0.20, 0.30]
+
+external_transfer:
+  dataset: TwiBot-20
+  protocols:
+    - strict_zero_shot_source_threshold
+    - validation_threshold_adaptation
+    - locked_within_twibot20_replication
+  graph_controls:
+    - graph_only
+    - metadata_only
+    - metadata_plus_graph
+
+prohibited_claims:
+  - tweet_content
+  - posting_timestamp_sequence
+  - posting_rhythm
+  - temporal_coordination
+  - universal_noise_resistance
+  - graph_improvement_when_not_statistically_supported
+
+integrity:
+  prohibit_test_tuning: true
+  prohibit_full_dataset_scaling: true
+  prohibit_cross_split_label_use: true
+  prohibit_stale_notebook_state: true
+  require_node_order_alignment: true
+  require_sha256_manifests: true
+  require_validation_locked_routing: true
+  require_source_locked_zero_shot_evaluation: true

@@ -1,0 +1,71 @@
+[build-system]
+requires = ["setuptools>=80", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "robust-bot-detection"
+version = "1.0.0"
+description = "Reliability-guided multimodal Twitter bot detection under informative modality missingness"
+readme = "README.md"
+requires-python = ">=3.11,<3.12"
+license = "MIT"
+authors = [
+    {name = "Syeda Um Ul Baneen"},
+    {name = "Nabeel Ahmed"},
+    {name = "Assad Abbas"},
+    {name = "Abdul Rehman"},
+    {name = "Sungchul Mun"}
+]
+keywords = [
+    "social bot detection",
+    "multimodal learning",
+    "informative missingness",
+    "expert routing",
+    "BERTweet",
+    "TwiBot"
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence"
+]
+dependencies = [
+    "numpy>=2.4,<3",
+    "pandas>=3.1,<4",
+    "scipy>=1.17,<2",
+    "scikit-learn>=1.9,<2",
+    "pyarrow>=26,<27",
+    "PyYAML>=6,<7",
+    "tqdm>=4.70,<5",
+    "torch>=2.14,<2.15",
+    "torch-geometric>=2.8,<3",
+    "transformers>=5.21,<6",
+    "xgboost>=3.2,<4",
+    "ijson>=3.6,<4",
+    "matplotlib>=3.11,<4",
+    "seaborn>=0.13,<1",
+    "joblib>=1.6,<2",
+    "psutil>=7.2,<8"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=9,<10",
+    "pytest-cov>=7,<8"
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+
+[tool.coverage.run]
+source = ["robust_bot_detection"]
+branch = true
+
+[project.urls]
+Repository = "https://github.com/AbdulRehman88/RobustBotDetection"
+Issues = "https://github.com/AbdulRehman88/RobustBotDetection/issues"

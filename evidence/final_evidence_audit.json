@@ -1,0 +1,23 @@
+{
+  "claim_constraints": [
+    "Natural TwiBot-22 performance is partially influenced by label-associated missingness patterns.",
+    "Strict zero-shot, threshold-adapted, and within-dataset replication results must remain separately labeled.",
+    "Strict cross-dataset graph transfer is not claimed because relation vocabularies are incompatible.",
+    "Graph topology is useful alone but adds no significant increment over metadata on TwiBot-20.",
+    "Five-seed Wilcoxon tests are low-powered; paired hierarchical bootstrap is the principal inference.",
+    "The 64-token configuration remains primary; 128-token sensitivity did not improve external performance."
+  ],
+  "critical_artifacts_verified": 27,
+  "experimental_phase": "CLOSED_PENDING_MANUSCRIPT_TABLES_FIGURES_AND_TEXT",
+  "external_confirmation": {
+    "debiased_strict_zero_shot_auroc": 0.817549,
+    "debiased_strict_zero_shot_macro_f1": 0.762883,
+    "locked_replication_macro_f1": 0.817844
+  },
+  "key_evidence_rows": 92,
+  "locked_primary_external_protocol": "TwiBot-22-trained strict zero-shot with source threshold on TwiBot-20 official test",
+  "locked_primary_internal_model": "frozen BERTweet semantic-mean + metadata",
+  "pass_manifests_verified": 47,
+  "runtime_seconds": 2.540400266647339,
+  "status": "PASS"
+}
