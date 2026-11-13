@@ -111,6 +111,7 @@ def test_citation_and_license_exist() -> None:
         (ROOT / "CITATION.cff").read_text(encoding="utf-8-sig")
     )
     assert citation["version"] == "1.1.0"
+    assert citation["doi"] == "10.5281/zenodo.24199691"
     assert citation["license"] == "MIT"
     assert (ROOT / "LICENSE").is_file()
 

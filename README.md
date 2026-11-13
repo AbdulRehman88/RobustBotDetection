@@ -1,6 +1,6 @@
 # RobustBotDetection
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24152214.svg)](https://doi.org/10.5281/zenodo.24152214)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24152213.svg)](https://doi.org/10.5281/zenodo.24152213)
 
 Reproducible implementation of **Reliability-Guided Expert Routing for Multimodal Twitter Bot Detection under Informative Modality Missingness**.
 
@@ -201,7 +201,7 @@ This repository does not support claims that:
 - third-party data may be freely redistributed.
 Natural-distribution performance, pattern-label-standardized performance, calibration, representation corruption, missingness stress, and cross-dataset transfer are reported as distinct validity dimensions.
 Citation
-Citation metadata are provided in [CITATION.cff](CITATION.cff). Version-specific archival metadata and persistent identifiers are maintained through Zenodo.
+Citation metadata are provided in [CITATION.cff](CITATION.cff). The exact v1.1.0 release is archived at https://doi.org/10.5281/zenodo.24199691. The concept DOI https://doi.org/10.5281/zenodo.24152213 resolves to the latest archived version.
 License
 Original code and documentation are released under the MIT License.
 
