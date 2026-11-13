@@ -23,7 +23,7 @@ EXCLUDED_PARTS = {
 def test_all_numbered_scripts_are_present() -> None:
     scripts = sorted((ROOT / "scripts").glob("[0-9][0-9]_*.py"))
     numbers = [int(path.name[:2]) for path in scripts]
-    assert numbers == list(range(1, 42))
+    assert numbers == list(range(1, 41)) + [42, 43]
 
 
 def test_all_scripts_compile() -> None:
@@ -110,6 +110,29 @@ def test_citation_and_license_exist() -> None:
     citation = yaml.safe_load(
         (ROOT / "CITATION.cff").read_text(encoding="utf-8-sig")
     )
-    assert citation["version"] == "1.0.0"
+    assert citation["version"] == "1.1.0"
     assert citation["license"] == "MIT"
     assert (ROOT / "LICENSE").is_file()
+
+def test_overlap_sensitivity_release_evidence() -> None:
+    evidence_dir = ROOT / "evidence" / "twibot20_overlap_sensitivity"
+    required = [
+        "overlap_audit.json",
+        "split_overlap_crosstab.csv",
+        "disjoint_seed_results.csv",
+        "disjoint_summary.csv",
+        "disjoint_paired_inference.csv",
+    ]
+    for name in required:
+        assert (evidence_dir / name).is_file(), name
+
+    assert (
+        ROOT
+        / "evidence"
+        / "figures"
+        / "fig07_twibot20_external_validation.pdf"
+    ).is_file()
+
+    assert not (
+        evidence_dir / "twibot20_test_overlap_records.csv"
+    ).exists()

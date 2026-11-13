@@ -1,7 +1,7 @@
 {
   "title": "RobustBotDetection: Reliability-Guided Expert Routing for Multimodal Twitter Bot Detection under Informative Modality Missingness",
   "upload_type": "software",
-  "description": "Reproducible implementation of a leakage-controlled multimodal social bot detection pipeline with modality-specific experts, validation-guided routing, informative-missingness auditing, pattern-label debiasing, probability calibration, robustness stress tests, statistical inference, and independent TwiBot-20 validation.",
+  "description": "Reproducible implementation of a leakage-controlled multimodal social bot detection pipeline with modality-specific experts, validation-guided routing, informative-missingness auditing, pattern-label debiasing, probability calibration, robustness stress tests, statistical inference, identifier-overlap auditing, and overlap-excluded TwiBot-20 validation.",
   "creators": [
     {
       "name": "Baneen, Syeda Um Ul",
@@ -38,5 +38,5 @@
     "TwiBot-22"
   ],
   "language": "eng",
-  "version": "1.0.0"
+  "version": "1.1.0"
 }

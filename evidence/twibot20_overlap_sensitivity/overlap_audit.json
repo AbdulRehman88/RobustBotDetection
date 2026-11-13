@@ -1,0 +1,15 @@
+{
+  "status": "PASS",
+  "twibot22_labeled_ids": 1000000,
+  "twibot20_labeled_ids": 11826,
+  "all_labeled_overlap": 2960,
+  "all_overlap_label_agreement": 0.7773648648648649,
+  "twibot20_test_users": 1183,
+  "twibot20_test_overlap": 298,
+  "twibot20_test_disjoint": 885,
+  "twibot20_test_overlap_percent": 25.190194420963653,
+  "twibot20_test_overlap_label_agreement": 0.8087248322147651,
+  "exclusion_rule": "Remove every TwiBot-20 test identifier appearing anywhere in the labeled TwiBot-22 release.",
+  "model_policy": "Reuse locked predictions; do not retrain models or reselect thresholds.",
+  "bootstrap_replicates": 10000
+}

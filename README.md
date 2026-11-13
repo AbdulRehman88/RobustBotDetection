@@ -17,7 +17,7 @@ This repository implements a leakage-controlled multimodal bot-detection pipelin
 - random and label-dependent missingness stress tests;
 - representation-corruption sensitivity;
 - paired, seed-aware statistical inference; and
-- independent TwiBot-20 zero-shot, threshold-adapted, and replication evaluation.
+- separately processed TwiBot-20 zero-shot, threshold-adapted, and replication evaluation with identifier-overlap auditing.
 
 ## Release scope
 
@@ -58,7 +58,6 @@ RobustBotDetection/
 ├── scripts/
 │   ├── 01_audit_dataset.py
 │   ├── ...
-│   └── 41_create_framework_architecture.py
 ├── src/robust_bot_detection/
 ├── tests/
 ├── DATA_ACCESS.md
@@ -152,7 +151,7 @@ python .\scripts\26_run_sequence_length_sensitivity.py
 python .\scripts\27_run_missingness_bias_audit.py
 python .\scripts\28_train_missingness_debiased_model.py
 
-5. Independent TwiBot-20 evaluation
+5. TwiBot-20 external evaluation with identifier-overlap auditing
 python .\scripts\29_audit_twibot20_external.py
 python .\scripts\30_build_twibot20_external_features.py
 python .\scripts\31_tokenize_twibot20_external.py
@@ -164,10 +163,13 @@ python .\scripts\36_run_twibot20_external_inference.py
 python .\scripts\37_run_twibot20_external_graph_controls.py
 python .\scripts\38_run_twibot20_graph_inference.py
 
-6. Evidence finalization and manuscript figures
+6. Evidence finalization and manuscript result figures
 python .\scripts\39_finalize_experiment_evidence.py
 python .\scripts\40_create_manuscript_figures.py
-python .\scripts\41_create_framework_architecture.py
+
+7. Identifier-overlap sensitivity and revised external figure
+python .\scripts\42_run_twibot20_overlap_sensitivity.py
+python .\scripts\43_regenerate_twibot20_disjoint_figure.py
 
 Evidence package
 The evidence/ directory contains compact aggregate evidence from the completed run:
@@ -175,14 +177,18 @@ The evidence/ directory contains compact aggregate evidence from the completed r
 - PASS-manifest inventory;
 - internal and external key results;
 - external master results;
-- final evidence-audit report; and
-- SHA-256 hashes for the release evidence package.
-The final evidence audit verified 27 critical artifacts, 47 PASS manifests, and 92 key evidence rows. These files support result verification without redistributing user-level predictions, embeddings, checkpoints, or source datasets.
+- final evidence-audit report;
+- SHA-256 hashes for the release evidence package;
+- identifier-overlap auditing and overlap-excluded TwiBot-20 aggregate results; and
+- the revised identifier-disjoint external-validation figure.
+The core evidence audit verified 27 critical artifacts, 47 PASS manifests, and 92 key evidence rows. The subsequent identifier-overlap sensitivity is preserved under evidence/twibot20_overlap_sensitivity/, while the revised external-validation figure is stored under evidence/figures/. These files support result verification without redistributing user-level identifiers, predictions, embeddings, checkpoints, or source datasets.
 Reproducibility checks
 Before release, the following checks should pass:
 python -m compileall .\scripts .\src
 python -m pytest
 python .\scripts\39_finalize_experiment_evidence.py
+python .\scripts\42_run_twibot20_overlap_sensitivity.py
+python .\scripts\43_regenerate_twibot20_disjoint_figure.py
 
 Exact numerical reproduction requires the same authorized source files, software versions, official splits, model assets, and CUDA-compatible environment.
 Interpretation constraints
@@ -193,9 +199,9 @@ This repository does not support claims that:
 - calibrated probabilities imply superior discrimination;
 - target-validation adaptation is equivalent to strict zero-shot transfer; or
 - third-party data may be freely redistributed.
-Natural-distribution performance, pattern–label-standardized performance, calibration, representation corruption, missingness stress, and cross-dataset transfer are reported as distinct validity dimensions.
+Natural-distribution performance, pattern-label-standardized performance, calibration, representation corruption, missingness stress, and cross-dataset transfer are reported as distinct validity dimensions.
 Citation
-Citation metadata are provided in [CITATION.cff](CITATION.cff). A permanent Zenodo DOI will be added to the citation metadata and README after the archived GitHub release is deposited.
+Citation metadata are provided in [CITATION.cff](CITATION.cff). Version-specific archival metadata and persistent identifiers are maintained through Zenodo.
 License
 Original code and documentation are released under the MIT License.
 

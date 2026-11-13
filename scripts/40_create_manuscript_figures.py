@@ -488,7 +488,7 @@ def figure_7_external_validation() -> None:
     axes[1].grid(axis="x", color=GRID_COLOR, linewidth=0.8)
     axes[1].grid(axis="y", visible=False)
     panel_label(axes[1], "(b)")
-    fig.suptitle("Independent TwiBot-20 Validation and Statistical Inference", y=0.985)
+    fig.suptitle("TwiBot-20 Validation and Statistical Inference", y=0.985)
     fig.tight_layout(rect=(0, 0, 1, 0.92), w_pad=1.5)
     save_figure(fig, "fig07_twibot20_external_validation")
 
