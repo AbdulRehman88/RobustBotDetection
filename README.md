@@ -201,7 +201,7 @@ This repository does not support claims that:
 - third-party data may be freely redistributed.
 Natural-distribution performance, pattern-label-standardized performance, calibration, representation corruption, missingness stress, and cross-dataset transfer are reported as distinct validity dimensions.
 Citation
-Citation metadata are provided in [CITATION.cff](CITATION.cff). The exact v1.1.0 release is archived at https://doi.org/10.5281/zenodo.24199691. The concept DOI https://doi.org/10.5281/zenodo.24152213 resolves to the latest archived version.
+Citation metadata are provided in [CITATION.cff](CITATION.cff). The concept DOI https://doi.org/10.5281/zenodo.24152213 resolves to the latest archived version; version-specific DOIs are preserved in the Zenodo version history.
 License
 Original code and documentation are released under the MIT License.
 

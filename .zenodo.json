@@ -4,24 +4,22 @@
   "description": "Reproducible implementation of a leakage-controlled multimodal social bot detection pipeline with modality-specific experts, validation-guided routing, informative-missingness auditing, pattern-label debiasing, probability calibration, robustness stress tests, statistical inference, identifier-overlap auditing, and overlap-excluded TwiBot-20 validation.",
   "creators": [
     {
-      "name": "Baneen, Syeda Um Ul",
-      "affiliation": "COMSATS University Islamabad"
+      "name": "Baneen, Syeda Um Ul"
     },
     {
-      "name": "Ahmed, Nabeel",
-      "affiliation": "Bajco Technologies"
+      "name": "Ahmed, Nabeel"
     },
     {
-      "name": "Abbas, Assad",
-      "affiliation": "East Central University"
+      "name": "Fatima, Rameen"
     },
     {
-      "name": "Rehman, Abdul",
-      "affiliation": "Jeonbuk National University"
+      "name": "Abbas, Assad"
     },
     {
-      "name": "Mun, Sungchul",
-      "affiliation": "Jeonbuk National University"
+      "name": "Rehman, Abdul"
+    },
+    {
+      "name": "Nadeem, Aamir"
     }
   ],
   "access_right": "open",
@@ -38,5 +36,5 @@
     "TwiBot-22"
   ],
   "language": "eng",
-  "version": "1.1.0"
+  "version": "1.1.1"
 }

@@ -1,36 +1,37 @@
 cff-version: 1.2.0
-message: "If you use this software, please cite the archived software release and the accompanying article when available."
-title: "RobustBotDetection: Reliability-Guided Expert Routing for Multimodal Twitter Bot Detection under Informative Modality Missingness"
+message: If you use this software, please cite the archived software release and the accompanying article when available.
+title: 'RobustBotDetection: Reliability-Guided Expert Routing for Multimodal Twitter Bot Detection under Informative Modality Missingness'
 type: software
-version: "1.1.0"
-date-released: "2026-11-13"
+version: 1.1.1
+date-released: '2026-11-16'
 license: MIT
 authors:
-  - given-names: "Syeda Um Ul"
-    family-names: "Baneen"
-  - given-names: "Nabeel"
-    family-names: "Ahmed"
-  - given-names: "Assad"
-    family-names: "Abbas"
-  - given-names: "Abdul"
-    family-names: "Rehman"
-  - given-names: "Sungchul"
-    family-names: "Mun"
+- given-names: Syeda Um Ul
+  family-names: Baneen
+  email: Baneen@bajcotechnologies.com
+- given-names: Nabeel
+  family-names: Ahmed
+  email: nabeelahmed3129@gmail.com
+- given-names: Rameen
+  family-names: Fatima
+  email: 70196322@student.uol.edu.pk
+- given-names: Assad
+  family-names: Abbas
+  email: aabbas@ecok.edu
+- given-names: Abdul
+  family-names: Rehman
+  email: a.rehman.jj@jj.ac.kr
+- given-names: Aamir
+  family-names: Nadeem
+  email: anadeem@gachon.ac.kr
 keywords:
-  - social bot detection
-  - multimodal learning
-  - informative missingness
-  - reliability-guided expert routing
-  - BERTweet
-  - TwiBot
-abstract: >-
-  Reproducible implementation of a leakage-controlled multimodal social bot
-  detection pipeline with modality-specific experts, validation-guided routing,
-  missingness-bias auditing, debiased learning, probability calibration,
-  robustness stress tests, statistical inference, identifier-overlap auditing, and overlap-excluded TwiBot-20
-  validation.
-
-repository-code: "https://github.com/AbdulRehman88/RobustBotDetection"
-
-doi: "10.5281/zenodo.24199691"
-url: "https://doi.org/10.5281/zenodo.24199691"
+- social bot detection
+- multimodal learning
+- informative missingness
+- reliability-guided expert routing
+- BERTweet
+- TwiBot
+abstract: Reproducible implementation of a leakage-controlled multimodal social bot detection pipeline with modality-specific experts, validation-guided routing, missingness-bias auditing, debiased learning, probability calibration, robustness stress tests, statistical inference, identifier-overlap auditing, and overlap-excluded TwiBot-20 validation.
+repository-code: https://github.com/AbdulRehman88/RobustBotDetection
+doi: 10.5281/zenodo.24152213
+url: https://doi.org/10.5281/zenodo.24152213
