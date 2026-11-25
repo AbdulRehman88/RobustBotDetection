@@ -52,7 +52,14 @@ def set_seed(seed: int) -> None:
     np.random.seed(seed)
     torch.manual_seed(seed)
     torch.cuda.manual_seed_all(seed)
-    torch.use_deterministic_algorithms(True, warn_only=True)
+    if torch.cuda.is_available():
+        # Sequence length is only three modalities. The math SDP
+        # backend is inexpensive here and avoids the nondeterministic
+        # memory-efficient attention backward kernel.
+        torch.backends.cuda.enable_flash_sdp(False)
+        torch.backends.cuda.enable_mem_efficient_sdp(False)
+        torch.backends.cuda.enable_math_sdp(True)
+    torch.use_deterministic_algorithms(True, warn_only=False)
     torch.backends.cudnn.benchmark = False
 
 
