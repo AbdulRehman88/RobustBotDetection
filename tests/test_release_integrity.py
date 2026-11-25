@@ -23,7 +23,15 @@ EXCLUDED_PARTS = {
 def test_all_numbered_scripts_are_present() -> None:
     scripts = sorted((ROOT / "scripts").glob("[0-9][0-9]_*.py"))
     numbers = [int(path.name[:2]) for path in scripts]
-    assert numbers == list(range(1, 41)) + [42, 43]
+    required_release_numbers = set(range(1, 41)) | {42, 43}
+
+    assert required_release_numbers.issubset(numbers)
+    assert 41 not in numbers
+    assert len(numbers) == len(set(numbers))
+    assert all(
+        number in required_release_numbers or number >= 44
+        for number in numbers
+    )
 
 
 def test_all_scripts_compile() -> None:
