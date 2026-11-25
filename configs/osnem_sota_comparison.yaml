@@ -78,6 +78,7 @@ botmoe_common_evidence:
   adaptations:
     - "The original description and tweet channels are represented by the canonical semantic profile-text embedding because tweet content is unavailable."
     - "The graph channel uses the locked seed-specific R-GCN embedding from the primary pipeline."
+    - "The three graph experts are independent nonlinear experts over the controlled R-GCN representation; GCN and RGT are not retrained because they are not part of the locked primary evidence."
     - "The metadata channel uses the locked ten-dimensional account representation."
 
 training:
