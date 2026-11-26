@@ -16,7 +16,8 @@ This repository implements a leakage-controlled multimodal bot-detection pipelin
 - validation-only probability calibration;
 - random and label-dependent missingness stress tests;
 - representation-corruption sensitivity;
-- paired, seed-aware statistical inference; and
+- paired, seed-aware statistical inference;
+- controlled common-evidence comparisons with BotBuster-style and BotMoE-style expert systems; and
 - separately processed TwiBot-20 zero-shot, threshold-adapted, and replication evaluation with identifier-overlap auditing.
 
 ## Release scope
@@ -167,9 +168,21 @@ python .\scripts\38_run_twibot20_graph_inference.py
 python .\scripts\39_finalize_experiment_evidence.py
 python .\scripts\40_create_manuscript_figures.py
 
-7. Identifier-overlap sensitivity and revised external figure
+7. Identifier-overlap sensitivity and external-validation figure
 python .\scripts\42_run_twibot20_overlap_sensitivity.py
 python .\scripts\43_regenerate_twibot20_disjoint_figure.py
+
+8. Controlled recent expert-based comparisons
+python .\scripts\44_prepare_osnem_comparators.py
+python .\scripts\45_train_botbuster_comparator.py
+python .\scripts\46_train_botmoe_comparator.py
+python .\scripts\47_run_osnem_comparator_inference.py
+python .\scripts\48_evaluate_osnem_forced_availability.py
+python .\scripts\49_run_osnem_forced_comparison_inference.py
+python .\scripts\50_finalize_osnem_comparator_evidence.py
+python .\scripts\51_regenerate_osnem_comparison_figure.py
+
+The comparator protocol uses the same canonical TwiBot-22 users, official splits, seeds, validation-only selection, locked test evaluation, and reported metrics as the proposed framework. BotBuster source commit `0e66db4821c74e60def6c88cff0d5b532d9e6c` and BotMoE source commit `a423930bc52844f73f49e5bdb2f3de8a1145b84e` are recorded for provenance. Because unavailable inputs and architecture-specific evidence cannot be made identical, these are audited common-evidence implementations, not claims of exact reproduction.
 
 Evidence package
 The evidence/ directory contains compact aggregate evidence from the completed run:
@@ -180,7 +193,10 @@ The evidence/ directory contains compact aggregate evidence from the completed r
 - final evidence-audit report;
 - SHA-256 hashes for the release evidence package;
 - identifier-overlap auditing and overlap-excluded TwiBot-20 aggregate results; and
-- the revised identifier-disjoint external-validation figure.
+- the identifier-disjoint external-validation figure;
+- aggregate natural and forced-availability comparisons with recent expert-based detectors;
+- graph-availability alignment auditing and paired inference; and
+- the controlled-comparison Figure 3.
 The core evidence audit verified 27 critical artifacts, 47 PASS manifests, and 92 key evidence rows. The subsequent identifier-overlap sensitivity is preserved under evidence/twibot20_overlap_sensitivity/, while the revised external-validation figure is stored under evidence/figures/. These files support result verification without redistributing user-level identifiers, predictions, embeddings, checkpoints, or source datasets.
 Reproducibility checks
 Before release, the following checks should pass:
@@ -189,6 +205,8 @@ python -m pytest
 python .\scripts\39_finalize_experiment_evidence.py
 python .\scripts\42_run_twibot20_overlap_sensitivity.py
 python .\scripts\43_regenerate_twibot20_disjoint_figure.py
+python .\scripts\50_finalize_osnem_comparator_evidence.py
+python .\scripts\51_regenerate_osnem_comparison_figure.py
 
 Exact numerical reproduction requires the same authorized source files, software versions, official splits, model assets, and CUDA-compatible environment.
 Interpretation constraints
@@ -197,9 +215,10 @@ This repository does not support claims that:
 - the framework is universally noise resistant;
 - missingness is always random;
 - calibrated probabilities imply superior discrimination;
-- target-validation adaptation is equivalent to strict zero-shot transfer; or
+- target-validation adaptation is equivalent to strict zero-shot transfer;
+- common-evidence comparator implementations are exact reproductions of the original systems; or
 - third-party data may be freely redistributed.
-Natural-distribution performance, pattern-label-standardized performance, calibration, representation corruption, missingness stress, and cross-dataset transfer are reported as distinct validity dimensions.
+Natural-distribution performance, recent expert-based comparison, forced-availability robustness, pattern-label-standardized performance, calibration, representation corruption, missingness stress, and cross-dataset transfer are reported as distinct validity dimensions.
 Citation
 Citation metadata are provided in [CITATION.cff](CITATION.cff). The concept DOI https://doi.org/10.5281/zenodo.24152213 resolves to the latest archived version; version-specific DOIs are preserved in the Zenodo version history.
 License

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "robust-bot-detection"
-version = "1.1.1"
+version = "1.2.0"
 description = "Reliability-guided multimodal Twitter bot detection under informative modality missingness"
 readme = "README.md"
 requires-python = ">=3.11,<3.12"

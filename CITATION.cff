@@ -2,8 +2,8 @@ cff-version: 1.2.0
 message: If you use this software, please cite the archived software release and the accompanying article when available.
 title: 'RobustBotDetection: Reliability-Guided Expert Routing for Multimodal Twitter Bot Detection under Informative Modality Missingness'
 type: software
-version: 1.1.1
-date-released: '2026-11-16'
+version: 1.2.0
+date-released: '2026-11-26'
 license: MIT
 authors:
 - given-names: Syeda Um Ul
@@ -31,7 +31,7 @@ keywords:
 - reliability-guided expert routing
 - BERTweet
 - TwiBot
-abstract: Reproducible implementation of a leakage-controlled multimodal social bot detection pipeline with modality-specific experts, validation-guided routing, missingness-bias auditing, debiased learning, probability calibration, robustness stress tests, statistical inference, identifier-overlap auditing, and overlap-excluded TwiBot-20 validation.
+abstract: Reproducible implementation of a leakage-controlled multimodal social bot detection pipeline with modality-specific experts, validation-guided routing, informative-missingness auditing, debiased learning, probability calibration, robustness stress tests, statistical inference, identifier-overlap auditing, overlap-excluded TwiBot-20 validation, and controlled common-evidence comparisons with BotBuster-style and BotMoE-style expert systems.
 repository-code: https://github.com/AbdulRehman88/RobustBotDetection
 doi: 10.5281/zenodo.24152213
 url: https://doi.org/10.5281/zenodo.24152213

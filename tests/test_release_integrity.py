@@ -23,15 +23,11 @@ EXCLUDED_PARTS = {
 def test_all_numbered_scripts_are_present() -> None:
     scripts = sorted((ROOT / "scripts").glob("[0-9][0-9]_*.py"))
     numbers = [int(path.name[:2]) for path in scripts]
-    required_release_numbers = set(range(1, 41)) | {42, 43}
+    required_release_numbers = set(range(1, 41)) | set(range(42, 52))
 
-    assert required_release_numbers.issubset(numbers)
+    assert set(numbers) == required_release_numbers
     assert 41 not in numbers
     assert len(numbers) == len(set(numbers))
-    assert all(
-        number in required_release_numbers or number >= 44
-        for number in numbers
-    )
 
 
 def test_all_scripts_compile() -> None:
@@ -118,7 +114,7 @@ def test_citation_and_license_exist() -> None:
     citation = yaml.safe_load(
         (ROOT / "CITATION.cff").read_text(encoding="utf-8-sig")
     )
-    assert citation["version"] == "1.1.1"
+    assert citation["version"] == "1.2.0"
     assert citation["doi"] == "10.5281/zenodo.24152213"
     assert citation["license"] == "MIT"
     assert (ROOT / "LICENSE").is_file()
@@ -145,3 +141,51 @@ def test_overlap_sensitivity_release_evidence() -> None:
     assert not (
         evidence_dir / "twibot20_test_overlap_records.csv"
     ).exists()
+
+
+def test_osnem_comparator_release_evidence() -> None:
+    evidence_dir = ROOT / "evidence" / "osnem_sota_comparison"
+    required = [
+        "manifest.json",
+        "key_results.json",
+        "natural_comparison.csv",
+        "natural_paired_inference.csv",
+        "forced_scenario_comparison.csv",
+        "forced_scenario_paired_inference.csv",
+        "graph_availability_audit.csv",
+        "robust_mean_comparison.csv",
+        "robust_mean_paired_inference.csv",
+    ]
+    for name in required:
+        assert (evidence_dir / name).is_file(), name
+
+    manifest = json.loads(
+        (evidence_dir / "manifest.json").read_text(encoding="utf-8-sig")
+    )
+    assert manifest["status"] == "PASS"
+    assert manifest["aggregate_evidence_only"] is True
+    assert manifest["contains_user_level_data"] is False
+    assert manifest["contains_predictions"] is False
+    assert manifest["contains_model_checkpoints"] is False
+    assert manifest["source_implementation_commits"] == {
+        "botbuster": "0e66db4821d1c74e60def6c88cff0d5b532d9e6c",
+        "botmoe": "a423930bc52844f73f49e5bdb2f3de8a1145b84e",
+    }
+
+    comparison_config = yaml.safe_load(
+        (ROOT / "configs" / "osnem_sota_comparison.yaml").read_text(
+            encoding="utf-8-sig"
+        )
+    )
+    assert comparison_config["source_implementations"]["botbuster"]["commit"] == (
+        "0e66db4821d1c74e60def6c88cff0d5b532d9e6c"
+    )
+    assert comparison_config["source_implementations"]["botmoe"]["commit"] == (
+        "a423930bc52844f73f49e5bdb2f3de8a1145b84e"
+    )
+    assert (
+        ROOT
+        / "evidence"
+        / "figures"
+        / "fig03_forced_modality_router_vs_fusion.pdf"
+    ).is_file()
