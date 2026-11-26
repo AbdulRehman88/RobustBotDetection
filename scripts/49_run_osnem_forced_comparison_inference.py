@@ -497,6 +497,7 @@ def main() -> None:
     ] = {}
     descriptive_rows: list[dict] = []
     robust_seed_rows: list[dict] = []
+    graph_availability_rows: list[dict] = []
 
     for seed in SEEDS:
         loaded[seed] = {}
@@ -560,9 +561,15 @@ def main() -> None:
                     f"Comparator label alignment failure: "
                     f"seed={seed}, scenario={scenario}."
                 )
+            # Text and metadata eligibility are common evidence and
+            # must align exactly. Graph eligibility is representation-
+            # specific by construction: the router uses the 14-relation
+            # heterogeneous topology mask, whereas the BotMoE comparator
+            # uses the locked follower/following R-GCN mask. Preserve both
+            # native masks and audit their overlap instead of silently
+            # redefining either evaluated system.
             for availability_column in [
                 "text_available",
-                "graph_available",
                 "metadata_available",
             ]:
                 if not np.array_equal(
@@ -574,10 +581,52 @@ def main() -> None:
                     ].to_numpy(dtype=bool),
                 ):
                     raise RuntimeError(
-                        "Availability alignment failure: "
+                        "Common-evidence availability failure: "
                         f"{availability_column}, seed={seed}, "
                         f"scenario={scenario}."
                     )
+
+            primary_graph = primary[
+                "graph_available"
+            ].to_numpy(dtype=bool)
+            comparator_graph = comparator[
+                "graph_available"
+            ].to_numpy(dtype=bool)
+            graph_availability_rows.append(
+                {
+                    "seed": seed,
+                    "scenario": scenario,
+                    "test_users": len(primary_graph),
+                    "router_graph_available": int(
+                        primary_graph.sum()
+                    ),
+                    "botmoe_graph_available": int(
+                        comparator_graph.sum()
+                    ),
+                    "both_graph_available": int(
+                        (primary_graph & comparator_graph).sum()
+                    ),
+                    "router_only_graph_available": int(
+                        (primary_graph & ~comparator_graph).sum()
+                    ),
+                    "botmoe_only_graph_available": int(
+                        (~primary_graph & comparator_graph).sum()
+                    ),
+                    "neither_graph_available": int(
+                        (~primary_graph & ~comparator_graph).sum()
+                    ),
+                    "graph_mask_mismatches": int(
+                        np.count_nonzero(
+                            primary_graph != comparator_graph
+                        )
+                    ),
+                    "graph_mask_mismatch_rate": float(
+                        np.mean(
+                            primary_graph != comparator_graph
+                        )
+                    ),
+                }
+            )
 
             loaded[seed][scenario] = {
                 "primary": primary,
@@ -642,6 +691,13 @@ def main() -> None:
                 )
             robust_seed_rows.append(row)
 
+    graph_availability_audit = pd.DataFrame(
+        graph_availability_rows
+    )
+    graph_availability_audit.to_csv(
+        OUTPUT_DIR / "graph_availability_audit.csv",
+        index=False,
+    )
     descriptive = pd.DataFrame(descriptive_rows)
     descriptive.to_csv(
         OUTPUT_DIR / "forced_comparison_seed_results.csv",
@@ -889,6 +945,17 @@ def main() -> None:
             "dependence through label-stratified resampling of joint "
             "14-bit prediction patterns."
         ),
+        "graph_availability_policy": (
+            "Preserve and audit native graph eligibility: the router "
+            "uses 14-relation heterogeneous topology, whereas the "
+            "BotMoE comparator uses follower/following R-GCN evidence. "
+            "Text and metadata eligibility remain exactly aligned."
+        ),
+        "comparison_interpretation": (
+            "All-user paired system comparison under each method's "
+            "declared native graph representation; it is not an "
+            "identical-graph-encoder ablation."
+        ),
         "scenario_multiplicity_control": (
             "Holm correction across seven forced scenarios within "
             "each metric."
@@ -911,7 +978,10 @@ def main() -> None:
         "integrity": {
             "node_alignment_verified": True,
             "label_alignment_verified": True,
-            "availability_alignment_verified": True,
+            "text_availability_alignment_verified": True,
+            "metadata_availability_alignment_verified": True,
+            "native_graph_availability_audited": True,
+            "graph_availability_is_representation_specific": True,
             "paired_predictions_used": True,
             "test_predictions_not_used_for_model_selection": True,
             "locked_thresholds_preserved": True,
@@ -923,6 +993,20 @@ def main() -> None:
         json.dump(manifest, handle, indent=2)
 
     print("OSNEM FORCED-AVAILABILITY INFERENCE: PASS")
+    print("\nNative graph-availability audit:")
+    print(
+        graph_availability_audit.groupby(
+            "scenario", sort=False
+        )[
+            [
+                "router_graph_available",
+                "botmoe_graph_available",
+                "both_graph_available",
+                "graph_mask_mismatches",
+                "graph_mask_mismatch_rate",
+            ]
+        ].first().to_string()
+    )
     print("\nScenario macro-F1 comparison:")
     print(manuscript_table.to_string(index=False))
     print("\nScenario paired inference:")
