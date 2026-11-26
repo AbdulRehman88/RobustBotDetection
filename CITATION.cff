@@ -33,5 +33,5 @@ keywords:
 - TwiBot
 abstract: Reproducible implementation of a leakage-controlled multimodal social bot detection pipeline with modality-specific experts, validation-guided routing, informative-missingness auditing, debiased learning, probability calibration, robustness stress tests, statistical inference, identifier-overlap auditing, overlap-excluded TwiBot-20 validation, and controlled common-evidence comparisons with BotBuster-style and BotMoE-style expert systems.
 repository-code: https://github.com/AbdulRehman88/RobustBotDetection
-doi: 10.5281/zenodo.24152213
-url: https://doi.org/10.5281/zenodo.24152213
+doi: 10.5281/zenodo.24549683
+url: https://doi.org/10.5281/zenodo.24549683
