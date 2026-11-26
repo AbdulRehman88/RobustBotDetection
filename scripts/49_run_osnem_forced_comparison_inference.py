@@ -140,9 +140,7 @@ def joint_probabilities(
     primary_predictions: np.ndarray,
     comparator_predictions: np.ndarray,
 ) -> dict:
-    record: dict[str, np.ndarray | int] = {
-        "scenario_count": int(primary.shape[1])
-    }
+    record: dict[str, np.ndarray | int] = {}
     for label, prefix in [(0, "human"), (1, "bot")]:
         selected = labels == label
         category = (
@@ -264,7 +262,9 @@ def build_robust_seed_data(
     comparator: np.ndarray,
 ) -> dict:
     codes = encode_joint_patterns(primary, comparator)
-    record: dict[str, np.ndarray | int] = {}
+    record: dict[str, np.ndarray | int] = {
+        "scenario_count": int(primary.shape[1]),
+    }
     for label, prefix in [(0, "human"), (1, "bot")]:
         values, counts = np.unique(
             codes[labels == label], return_counts=True
