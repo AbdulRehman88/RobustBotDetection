@@ -1,0 +1,197 @@
+{
+  "status": "PASS",
+  "reviewer_request": "Quantitative comparison with BotBuster and BotMoE",
+  "natural_distribution": [
+    {
+      "model": "proposed_reliability_route_natural_tgm",
+      "seeds": 5,
+      "test_users": 100000,
+      "accuracy_mean": 0.7470060000000001,
+      "accuracy_std": 0.001957454980325217,
+      "balanced_accuracy_mean": 0.7004484563347054,
+      "balanced_accuracy_std": 0.0010629026844974888,
+      "f1_bot_mean": 0.577475853199297,
+      "f1_bot_std": 0.0015901739872410659,
+      "macro_f1_mean": 0.6984570660724718,
+      "macro_f1_std": 0.000623034766885777,
+      "auroc_mean": 0.7656472872900641,
+      "auroc_std": 0.0005575072017804874,
+      "auprc_mean": 0.5646917986789357,
+      "auprc_std": 0.006268621099907906
+    },
+    {
+      "model": "botbuster_style_common_evidence",
+      "seeds": 5,
+      "test_users": 100000,
+      "accuracy_mean": 0.7335099999999999,
+      "accuracy_std": 0.004618029882969592,
+      "balanced_accuracy_mean": 0.692617994357531,
+      "balanced_accuracy_std": 0.003019279104464831,
+      "f1_bot_mean": 0.5672356416184334,
+      "f1_bot_std": 0.004060469796460216,
+      "macro_f1_mean": 0.6873469265256521,
+      "macro_f1_std": 0.003562322818304473,
+      "auroc_mean": 0.7545001934640222,
+      "auroc_std": 0.003436070114486514,
+      "auprc_mean": 0.5627568381514848,
+      "auprc_std": 0.007748325572759669
+    },
+    {
+      "model": "botmoe_style_common_evidence",
+      "seeds": 5,
+      "test_users": 100000,
+      "accuracy_mean": 0.743494,
+      "accuracy_std": 0.0009211568813182946,
+      "balanced_accuracy_mean": 0.7021570352770568,
+      "balanced_accuracy_std": 0.0010253421177359237,
+      "f1_bot_mean": 0.5800361720068773,
+      "f1_bot_std": 0.0014008216746058115,
+      "macro_f1_mean": 0.6976976153918751,
+      "macro_f1_std": 0.0009856387791416128,
+      "auroc_mean": 0.7693425548090363,
+      "auroc_std": 0.0018459217752394767,
+      "auprc_mean": 0.5972651248139924,
+      "auprc_std": 0.0028805438938334527
+    }
+  ],
+  "robust_summary": [
+    {
+      "scope": "native_evidence_mean_across_7_scenarios",
+      "model": "botmoe_style_common_evidence",
+      "scenarios": "T,G,M,TG,TM,GM,TGM",
+      "scenario_count": 7,
+      "seeds": 5,
+      "macro_f1_mean": 0.551731474425907,
+      "macro_f1_std": 0.0020761038128776915,
+      "balanced_accuracy_mean": 0.6019666849334857,
+      "balanced_accuracy_std": 0.0009686811078410535
+    },
+    {
+      "scope": "native_evidence_mean_across_7_scenarios",
+      "model": "validation_selected_reliability_router",
+      "scenarios": "T,G,M,TG,TM,GM,TGM",
+      "scenario_count": 7,
+      "seeds": 5,
+      "macro_f1_mean": 0.6619413482726608,
+      "macro_f1_std": 0.0003254053393002879,
+      "balanced_accuracy_mean": 0.6706329199748386,
+      "balanced_accuracy_std": 0.00037717051516672923
+    },
+    {
+      "scope": "aligned_non_graph_mean_across_T_M_TM",
+      "model": "botmoe_style_common_evidence",
+      "scenarios": "T,M,TM",
+      "scenario_count": 3,
+      "seeds": 5,
+      "macro_f1_mean": 0.5658243777153357,
+      "macro_f1_std": 0.003149422660408025,
+      "balanced_accuracy_mean": 0.6146439496566917,
+      "balanced_accuracy_std": 0.0014563160136650238
+    },
+    {
+      "scope": "aligned_non_graph_mean_across_T_M_TM",
+      "model": "validation_selected_reliability_router",
+      "scenarios": "T,M,TM",
+      "scenario_count": 3,
+      "seeds": 5,
+      "macro_f1_mean": 0.6728332081187637,
+      "macro_f1_std": 0.00036870684424685884,
+      "balanced_accuracy_mean": 0.6778707520853307,
+      "balanced_accuracy_std": 0.00030035535958036064
+    }
+  ],
+  "natural_paired_inference": [
+    {
+      "evaluation_scope": "natural_distribution",
+      "primary_model": "proposed_reliability_route_natural_tgm",
+      "comparator": "botbuster_style_common_evidence",
+      "metric": "macro_f1",
+      "seeds": 5,
+      "test_users": 100000,
+      "mean_observed_difference": 0.011110139546819674,
+      "seed_difference_std": 0.0037791379369355766,
+      "bootstrap_ci_lower_95": 0.008108471663589972,
+      "bootstrap_ci_upper_95": 0.014265579342198586,
+      "bootstrap_p_raw": 0.00019998000199980003,
+      "probability_primary_higher": 1.0,
+      "wilcoxon_statistic": 0.0,
+      "wilcoxon_p_raw": 0.0625,
+      "interpretation": "primary_higher",
+      "bootstrap_p_holm": 0.00039996000399960006,
+      "wilcoxon_p_holm": 0.125
+    },
+    {
+      "evaluation_scope": "natural_distribution",
+      "primary_model": "proposed_reliability_route_natural_tgm",
+      "comparator": "botmoe_style_common_evidence",
+      "metric": "macro_f1",
+      "seeds": 5,
+      "test_users": 100000,
+      "mean_observed_difference": 0.0007594506805966627,
+      "seed_difference_std": 0.0009466317106609423,
+      "bootstrap_ci_lower_95": -0.0003585234175409291,
+      "bootstrap_ci_upper_95": 0.001932727046156854,
+      "bootstrap_p_raw": 0.1897810218978102,
+      "probability_primary_higher": 0.9052,
+      "wilcoxon_statistic": 2.0,
+      "wilcoxon_p_raw": 0.1875,
+      "interpretation": "difference_not_resolved",
+      "bootstrap_p_holm": 0.1897810218978102,
+      "wilcoxon_p_holm": 0.1875
+    }
+  ],
+  "forced_robust_paired_inference": [
+    {
+      "primary_model": "validation_selected_reliability_router",
+      "comparator": "botmoe_style_common_evidence",
+      "scope": "robust_mean_across_7_scenarios",
+      "metric": "macro_f1",
+      "seeds": 5,
+      "test_users": 100000,
+      "mean_observed_difference": 0.1102098738467538,
+      "seed_difference_std": 0.0021568256933525054,
+      "bootstrap_ci_lower_95": 0.10833219612791234,
+      "bootstrap_ci_upper_95": 0.11196048215190552,
+      "bootstrap_p_raw": 0.00019998000199980003,
+      "probability_primary_higher": 1.0,
+      "wilcoxon_statistic": 0.0,
+      "wilcoxon_p_raw": 0.0625,
+      "interpretation": "primary_higher",
+      "bootstrap_p_holm": 0.0007999200079992001,
+      "wilcoxon_p_holm": 0.25
+    },
+    {
+      "primary_model": "validation_selected_reliability_router",
+      "comparator": "botmoe_style_common_evidence",
+      "scope": "aligned_non_graph_mean_across_T_M_TM",
+      "metric": "macro_f1",
+      "seeds": 5,
+      "test_users": 100000,
+      "mean_observed_difference": 0.10700883040342812,
+      "seed_difference_std": 0.003217745351839329,
+      "bootstrap_ci_lower_95": 0.10442754290953266,
+      "bootstrap_ci_upper_95": 0.10975486829973656,
+      "bootstrap_p_raw": 0.00019998000199980003,
+      "probability_primary_higher": 1.0,
+      "wilcoxon_statistic": 0.0,
+      "wilcoxon_p_raw": 0.0625,
+      "interpretation": "primary_higher",
+      "bootstrap_p_holm": 0.0007999200079992001,
+      "wilcoxon_p_holm": 0.25
+    }
+  ],
+  "graph_availability_interpretation": "The seven-condition comparison preserves each system's native graph representation. The T/M/TM sensitivity excludes graph evidence and therefore has identical availability across systems.",
+  "source_implementations": {
+    "botbuster": {
+      "paper": "BotBuster: Multi-Platform Bot Detection Using a Mixture of Experts",
+      "repository": "https://github.com/quarbby/BotBuster-Universe",
+      "commit": "0e66db4821d1c74e60def6c88cff0d5b532d9e6c"
+    },
+    "botmoe": {
+      "paper": "BotMoE: Twitter Bot Detection with Community-Aware Mixtures of Modal-Specific Experts",
+      "repository": "https://github.com/lyh6560new/BotMoE",
+      "commit": "a423930bc52844f73f49e5bdb2f3de8a1145b84e"
+    }
+  },
+  "naming_constraint": "Comparator models are common-evidence, audited reimplementations and are not described as exact reproductions of the original systems."
+}

@@ -1,0 +1,5 @@
+scope,model,scenarios,scenario_count,seeds,macro_f1_mean,macro_f1_std,balanced_accuracy_mean,balanced_accuracy_std
+native_evidence_mean_across_7_scenarios,botmoe_style_common_evidence,"T,G,M,TG,TM,GM,TGM",7,5,0.551731474425907,0.0020761038128776915,0.6019666849334857,0.0009686811078410535
+native_evidence_mean_across_7_scenarios,validation_selected_reliability_router,"T,G,M,TG,TM,GM,TGM",7,5,0.6619413482726608,0.0003254053393002879,0.6706329199748386,0.00037717051516672923
+aligned_non_graph_mean_across_T_M_TM,botmoe_style_common_evidence,"T,M,TM",3,5,0.5658243777153357,0.003149422660408025,0.6146439496566917,0.0014563160136650238
+aligned_non_graph_mean_across_T_M_TM,validation_selected_reliability_router,"T,M,TM",3,5,0.6728332081187637,0.00036870684424685884,0.6778707520853307,0.00030035535958036064

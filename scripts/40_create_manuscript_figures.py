@@ -250,19 +250,27 @@ def figure_3_forced_modalities() -> None:
     gated = read_csv(
         "13_multimodal_fusion/gated_full_transductive_moddrop_on/scenario_summary.csv"
     )
+    botmoe = read_csv(
+        "40_osnem_sota_comparison/botmoe_forced_availability/"
+        "forced_scenario_summary.csv"
+    )
     scenarios = ["T", "G", "M", "TG", "TM", "GM", "TGM"]
     router = router.set_index("scenario").reindex(scenarios)
     gated = gated.set_index("scenario").reindex(scenarios)
+    botmoe = botmoe.set_index("scenario").reindex(scenarios)
     x = np.arange(len(scenarios))
-    width = 0.36
+    width = 0.25
 
-    fig, ax = plt.subplots(figsize=(9.0, 4.8))
-    ax.bar(x - width / 2, router["macro_f1_mean"], width,
+    fig, ax = plt.subplots(figsize=(10.5, 4.8))
+    ax.bar(x - width, router["macro_f1_mean"], width,
            yerr=router["macro_f1_std"], color=COLORS[0], edgecolor=BAR_EDGE,
            linewidth=0.8, capsize=3, label="Reliability Router")
-    ax.bar(x + width / 2, gated["macro_f1_mean"], width,
+    ax.bar(x, gated["macro_f1_mean"], width,
            yerr=gated["macro_f1_std"], color=COLORS[5], edgecolor=BAR_EDGE,
            linewidth=0.8, capsize=3, label="Gated Fusion + Modality Dropout")
+    ax.bar(x + width, botmoe["macro_f1_mean"], width,
+           yerr=botmoe["macro_f1_std"], color=COLORS[2], edgecolor=BAR_EDGE,
+           linewidth=0.8, capsize=3, label="BotMoE-style (Common Evidence)")
     ax.set_xticks(x, scenarios)
     ax.set_xlabel("Available Modalities (T: Text, G: Graph, M: Metadata)")
     ax.set_ylabel("Test Macro-F1")
@@ -270,7 +278,7 @@ def figure_3_forced_modalities() -> None:
     ax.yaxis.set_major_locator(MultipleLocator(0.05))
     ax.set_title("Reliability Routing under Forced Modality Availability", pad=10)
     style_axis(ax)
-    bold_legend(ax, loc="upper center", ncol=2)
+    bold_legend(ax, loc="upper center", ncol=3)
     fig.tight_layout()
     save_figure(fig, "fig03_forced_modality_router_vs_fusion")
 

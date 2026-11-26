@@ -1,0 +1,104 @@
+revision:
+  manuscript_reference: OSNEM-D-26-00779
+  purpose: "Reviewer-requested quantitative comparison with BotBuster and BotMoE"
+
+source_implementations:
+  botbuster:
+    paper: "BotBuster: Multi-Platform Bot Detection Using a Mixture of Experts"
+    repository: "https://github.com/quarbby/BotBuster-Universe"
+    commit: "0e66db4821d1c74e60def6c88cff0d5b532d9e6c"
+  botmoe:
+    paper: "BotMoE: Twitter Bot Detection with Community-Aware Mixtures of Modal-Specific Experts"
+    repository: "https://github.com/lyh6560new/BotMoE"
+    commit: "a423930bc52844f73f49e5bdb2f3de8a1145b84e"
+
+comparison_policy:
+  benchmark: TwiBot-22
+  splits: official
+  seeds: [42, 123, 2024, 3407, 7777]
+  primary_metric: macro_f1
+  threshold_selection: validation_only_exact_macro_f1
+  test_access: after_hyperparameter_and_threshold_lock
+  evidence_levels:
+    published_reference:
+      description: "Values reported by the original papers; not recomputed in this repository"
+    common_evidence_reimplementation:
+      description: "Audited implementations evaluated on the same canonical users, modalities, splits, seeds, metrics, and threshold protocol as the proposed method"
+  naming_rule: "Never describe a common-evidence reimplementation as an exact reproduction of the original system"
+
+canonical_inputs:
+  users: outputs/02_canonical_data/users.parquet
+  semantic_text_embeddings: outputs/08_frozen_bertweet/mean_pooled_embeddings.npy
+  semantic_text_available: outputs/08_frozen_bertweet/text_available.npy
+  metadata_features: outputs/04_metadata_features/metadata_features.npy
+  graph_available: outputs/12_rgcn_embeddings/full_transductive/graph_available.npy
+  graph_embedding_pattern: outputs/12_rgcn_embeddings/full_transductive/rgcn_embeddings_seed_{seed}.npy
+  identity_tfidf: outputs/19_identity_tfidf/identity_tfidf_features.npz
+  identity_available: outputs/19_identity_tfidf/identity_available.npy
+  node_ids: outputs/08_frozen_bertweet/node_ids.npy
+  labels: outputs/08_frozen_bertweet/labels.npy
+  split_ids: outputs/08_frozen_bertweet/split_ids.npy
+
+botbuster_common_evidence:
+  designation: botbuster_style_common_evidence
+  experts:
+    identity:
+      fields: [name_text, username_text]
+      representation: train_only_tfidf
+    semantic_profile:
+      fields: [description_text, location_text]
+      representation: frozen_bertweet_mean_pooling
+    metadata:
+      fields: [created_at, public_metrics, verified]
+      representation: train_only_standardized_10d
+  gating:
+    type: availability_masked_softmax
+    input: expert_hidden_states_and_availability
+  omitted_original_input:
+    - tweet_or_post_content
+  rationale: "Tweet/post content is not present in the canonical primary pipeline; inventing or borrowing it would break the controlled comparison."
+
+botmoe_common_evidence:
+  designation: botmoe_style_common_evidence
+  modalities:
+    text:
+      input_dimension: 768
+      experts: 2
+    graph:
+      input_dimension: 64
+      experts: 3
+    metadata:
+      input_dimension: 10
+      experts: 3
+  hidden_dimension: 128
+  top_k: 1
+  dropout: 0.30
+  load_balance_weight: 0.01
+  fusion: modality_attention
+  adaptations:
+    - "The original description and tweet channels are represented by the canonical semantic profile-text embedding because tweet content is unavailable."
+    - "The graph channel uses the locked seed-specific R-GCN embedding from the primary pipeline."
+    - "The three graph experts are independent nonlinear experts over the controlled R-GCN representation; GCN and RGT are not retrained because they are not part of the locked primary evidence."
+    - "The metadata channel uses the locked ten-dimensional account representation."
+
+training:
+  batch_size: 4096
+  evaluation_batch_size: 8192
+  maximum_epochs: 40
+  early_stopping_patience: 6
+  optimizer: adamw
+  learning_rate_candidates: [0.0001, 0.0003, 0.001]
+  weight_decay: 0.000001
+  class_weighting: training_split_inverse_frequency
+  deterministic: true
+  device: cuda
+
+integrity:
+  prohibit_test_tuning: true
+  prohibit_cross_split_label_use: true
+  require_identical_node_order: true
+  require_identical_labels: true
+  require_identical_splits: true
+  require_train_only_preprocessing: true
+  require_seed_specific_graph_embeddings: true
+  require_source_commit_provenance: true
