@@ -140,7 +140,9 @@ def joint_probabilities(
     primary_predictions: np.ndarray,
     comparator_predictions: np.ndarray,
 ) -> dict:
-    record: dict[str, np.ndarray | int] = {}
+    record: dict[str, np.ndarray | int] = {
+        "scenario_count": int(primary.shape[1])
+    }
     for label, prefix in [(0, "human"), (1, "bot")]:
         selected = labels == label
         category = (
@@ -235,12 +237,16 @@ def encode_joint_patterns(
         raise RuntimeError(
             "Robust pattern matrices have unequal shapes."
         )
-    if primary.shape[1] != len(SCENARIOS):
+    if (
+        primary.ndim != 2
+        or primary.shape[1] < 1
+        or primary.shape[1] > 8
+    ):
         raise RuntimeError(
-            "Unexpected robust pattern scenario count."
+            "Robust pattern matrices require 1--8 scenarios."
         )
     codes = np.zeros(primary.shape[0], dtype=np.uint16)
-    for index in range(len(SCENARIOS)):
+    for index in range(primary.shape[1]):
         codes |= (
             primary[:, index].astype(np.uint16)
             << np.uint16(2 * index)
@@ -343,7 +349,9 @@ def paired_robust_bootstrap(
             )
             primary_scenarios = []
             comparator_scenarios = []
-            for scenario_index in range(len(SCENARIOS)):
+            for scenario_index in range(
+                int(data["scenario_count"])
+            ):
                 primary_scenarios.append(
                     metric_from_confusion(
                         *pattern_confusion(
@@ -866,6 +874,80 @@ def main() -> None:
             )
         )
 
+    # Exact common-availability sensitivity. These three
+    # conditions exclude the graph channel, so text and metadata
+    # eligibility are identical for both systems on every test user.
+    aligned_scenarios = ["T", "M", "TM"]
+    aligned_pattern_data = []
+    aligned_observed: dict[str, list[float]] = {
+        metric: [] for metric in METRICS
+    }
+    for seed in SEEDS:
+        labels = loaded[seed][aligned_scenarios[0]][
+            "primary"
+        ]["label"].to_numpy(dtype=np.int8)
+        primary_matrix = np.column_stack(
+            [
+                loaded[seed][scenario]["primary"][
+                    "prediction"
+                ].to_numpy(dtype=np.int8)
+                for scenario in aligned_scenarios
+            ]
+        )
+        comparator_matrix = np.column_stack(
+            [
+                loaded[seed][scenario]["comparator"][
+                    "prediction"
+                ].to_numpy(dtype=np.int8)
+                for scenario in aligned_scenarios
+            ]
+        )
+        aligned_pattern_data.append(
+            build_robust_seed_data(
+                labels, primary_matrix, comparator_matrix
+            )
+        )
+        for metric in METRICS:
+            primary_mean = np.mean(
+                [
+                    metric_value(
+                        labels,
+                        primary_matrix[:, index],
+                        metric,
+                    )
+                    for index in range(len(aligned_scenarios))
+                ]
+            )
+            comparator_mean = np.mean(
+                [
+                    metric_value(
+                        labels,
+                        comparator_matrix[:, index],
+                        metric,
+                    )
+                    for index in range(len(aligned_scenarios))
+                ]
+            )
+            aligned_observed[metric].append(
+                float(primary_mean - comparator_mean)
+            )
+
+    for metric in METRICS:
+        bootstrap = paired_robust_bootstrap(
+            aligned_pattern_data, metric, rng
+        )
+        robust_inference_rows.append(
+            inference_record(
+                "aligned_non_graph_mean_across_T_M_TM",
+                metric,
+                np.asarray(
+                    aligned_observed[metric],
+                    dtype=np.float64,
+                ),
+                bootstrap,
+            )
+        )
+
     inference = pd.DataFrame(inference_rows)
     for metric in METRICS:
         selected = inference["metric"].eq(metric)
@@ -960,9 +1042,16 @@ def main() -> None:
             "Holm correction across seven forced scenarios within "
             "each metric."
         ),
+        "aligned_common_availability_sensitivity": {
+            "scenarios": ["T", "M", "TM"],
+            "rationale": (
+                "These conditions exclude graph evidence; text and "
+                "metadata eligibility are identical across systems."
+            ),
+        },
         "robust_multiplicity_control": (
-            "Holm correction across the two prespecified robust "
-            "metrics."
+            "Holm correction across two inference scopes and two "
+            "prespecified robust metrics."
         ),
         "seed_level_test": (
             "Exact two-sided Wilcoxon signed-rank; with five seeds "
